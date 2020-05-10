@@ -83,14 +83,14 @@ int draw_line(pgm_t *image, int x1, int y1, int x2, int y2, int color)
 {
 	if(!image || color < 0 || color > MAX_COLOR_VALUE) return ERROR_PGM;
 
-	int i, y;
+	float i, y;
 	float tan;
 
 	if(x1 < x2)
 	{
 		tan = ((float)y2 - y1)/(x2 - x1);
-		for(i=x1; i<x2; i++){
-			y = y1 + tan*(i-x1);
+		for(i=x1; i<x2; i+=0.001){ //0.001 de incremento para a linha parecer contínua quando o ângulo estiver muito
+			y = y1 + tan*(i-x1); //próximo de 90º
 			if(is_inside(image, i, y))
 				set_pixel(image, i, y, color);
 		}
@@ -98,7 +98,7 @@ int draw_line(pgm_t *image, int x1, int y1, int x2, int y2, int color)
 	else if(x1 > x2)
 	{
 		tan = ((float)y1-y2)/(x1-x2);
-		for(i=x2; i<x1;i++) 
+		for(i=x2; i<x1;i+=0.001) 
 		{
 			y = y2 + tan*(i-x2);
 			if(is_inside(image, i, y))
@@ -109,12 +109,12 @@ int draw_line(pgm_t *image, int x1, int y1, int x2, int y2, int color)
 	{
 		if(y1<y2)
 		{
-			for(i=y1; i<y2; i++)
+			for(i=y1; i<y2; i+=0.001)
 				if(is_inside(image, x1, i))
 					set_pixel(image, x1, i, color);
 		}
 		else
-			for(i=y2; i<y1; i++)
+			for(i=y2; i<y1; i+=0.001)
 				if(is_inside(image, x1, i))
 					set_pixel(image, x1, i, color);
 	}
